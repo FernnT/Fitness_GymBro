@@ -1,3 +1,10 @@
+
+## FRONTEND
+## TECH STACK## TECH STACK
+- **Node.js**
+- **JavaScript**
+
+
 #SETUP YOURSELF
 download the repo
 ```
@@ -10,6 +17,7 @@ npm run dev
 npm create vite@latest my-app
 cd Fitness_GymBro
 npm install react-router-dom
+npm install axios
 npm install
 npm run dev
 ```
@@ -24,6 +32,7 @@ npm run dev
 
 ## HOW TO SETUP
 1. Download and install Postgresql
+https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 2. create a database in PgAdmin
 3. create a .env file in the backend folder 
 ```bash
