@@ -6,7 +6,7 @@ const userWorkoutExerciseRouter = Router();
 userWorkoutExerciseRouter.get("/getUserWorkoutExerciseByID/:id", authMiddleware, getUserWorkoutExerciseByID);
 userWorkoutExerciseRouter.post("/addExercise", authMiddleware, addExercise);
 userWorkoutExerciseRouter.post("/complete/:id", authMiddleware, completeExercise);
-//userWorkoutExerciseRouter.post("/update/:id", authMiddleware, updateUserWorkoutExercise);
+userWorkoutExerciseRouter.put("/update/:id", authMiddleware, updateUserWorkoutExercise);
 userWorkoutExerciseRouter.delete("/delete/:id", authMiddleware, deleteUserWorkoutExercise);
 
 export default userWorkoutExerciseRouter;

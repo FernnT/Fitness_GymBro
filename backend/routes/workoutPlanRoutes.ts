@@ -15,7 +15,7 @@ workoutPlanRoutes.post('/createWorkoutPlan',authMiddleware, createWorkoutPlan)
 workoutPlanRoutes.get('/getWorkoutPlans',authMiddleware, getWorkoutPlans) 
 workoutPlanRoutes.get('/getWorkoutPlanWithUserWorkoutExercise/:id',authMiddleware, getWorkoutPlanWithUserWorkoutExerciseById)
 workoutPlanRoutes.get('/getWorkoutPlanWithUserWorkoutExerciseAll',authMiddleware, getWorkoutPlanWithUserWorkoutExerciseAll)
-workoutPlanRoutes.get('/getPlanByID/:id',authMiddleware, getWorkoutPlanByID) 
+workoutPlanRoutes.get('/getWorkoutPlanByID/:id',authMiddleware, getWorkoutPlanByID) 
 workoutPlanRoutes.put('/updatePlan/:id',authMiddleware, updateWorkoutPlan)
 workoutPlanRoutes.delete('/deletePlan/:id',authMiddleware, deleteWorkoutPlan)
 
