@@ -49,8 +49,65 @@ export const getUserWorkoutExerciseByID = async (req: AuthRequest, res: Response
     }
 }
 
-export const updateUserWorkoutExercise = async (req: Request, res: Response) => {
-   //TODO: update exercise
+export const updateUserWorkoutExercise = async (req: AuthRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).send("User not authenticated");
+        }
+
+        const { id } = req.params;
+        
+        // Verify ownership before update
+        const exerciseData = await db
+            .select({
+                exercise: userWorkoutExercise,
+                plan: workoutPlans
+            })
+            .from(userWorkoutExercise)
+            .innerJoin(
+                workoutPlans,
+                eq(workoutPlans.planId, userWorkoutExercise.planId)
+            )
+            .where(
+                and(
+                    eq(userWorkoutExercise.workoutExerciseId, parseInt(id)),
+                    eq(workoutPlans.userId, userId)
+                )
+            );
+
+        if (!exerciseData.length) {
+            return res.status(404).send("Exercise not found or unauthorized");
+        }
+
+        // Don't allow updating completed exercises
+        if (exerciseData[0].exercise.completed) {
+            return res.status(400).send("Cannot update completed exercises");
+        }
+
+        // Update the exercise
+        await db.update(userWorkoutExercise)
+            .set({
+                sets: req.body.sets ?? exerciseData[0].exercise.sets,
+                reps: req.body.reps ?? exerciseData[0].exercise.reps,
+                weight: req.body.weight ?? exerciseData[0].exercise.weight,
+                distance: req.body.distance ?? exerciseData[0].exercise.distance,
+                durationMin: req.body.durationMin ?? exerciseData[0].exercise.durationMin,
+            })
+            .where(eq(userWorkoutExercise.workoutExerciseId, parseInt(id)));
+
+        // Recalculate plan intensity after update
+        const updatedIntensity = await calculateAndUpdatePlanIntensity(exerciseData[0].exercise.planId);
+
+        res.status(200).send({
+            message: "Exercise updated successfully",
+            updatedIntensity
+        });
+        return;
+    } catch (error) {
+        res.status(500).send(error.message);
+        return;
+    }
 }
 
 export const addExercise = async (req: AuthRequest, res: Response) => {

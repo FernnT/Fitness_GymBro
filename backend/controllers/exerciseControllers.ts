@@ -14,10 +14,6 @@ export const getExercises = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteExercise = (req: Request, res: Response) => {
-
-}
-
 export const getExerciseByID = (req: Request, res: Response) => {  
         
 }
