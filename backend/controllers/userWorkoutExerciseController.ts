@@ -138,40 +138,71 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
         }
 
         const { id } = req.params;
-        const exercise = await db.select()
+        
+        // Join with workoutPlans to verify ownership and check completion status
+        const exerciseData = await db
+            .select({
+                exercise: userWorkoutExercise,
+                plan: workoutPlans,
+                exerciseDetails: exercises
+            })
             .from(userWorkoutExercise)
-            .where(eq(userWorkoutExercise.workoutExerciseId, parseInt(id)));
+            .innerJoin(
+                workoutPlans,
+                eq(workoutPlans.planId, userWorkoutExercise.planId)
+            )
+            .innerJoin(
+                exercises,
+                eq(exercises.exerciseId, userWorkoutExercise.exerciseId)
+            )
+            .where(
+                and(
+                    eq(userWorkoutExercise.workoutExerciseId, parseInt(id)),
+                    eq(workoutPlans.userId, userId),
+                    eq(userWorkoutExercise.completed, false) // Only get uncompleted exercises
+                )
+            );
 
-        if (!exercise[0]) {
-             res.status(404).send("Exercise not found");
-             return;    
+        if (!exerciseData.length) {
+            return res.status(400).send("Exercise not found, already completed, or unauthorized");
         }
 
-        // Update exercise to completed
+        const exercise = exerciseData[0].exercise;
+        const exerciseDetails = exerciseData[0].exerciseDetails;
+
+        // Calculate calories burned
+        // Basic formula: (MET value * weight in kg * duration in hours)
+        // MET values: Strength training ≈ 3.5, Cardio ≈ 7.0
+        const MET = exerciseDetails.metValue;
+        const durationHours = (exercise.durationMin || 0) / 60;
+        const weightKg = (exercise.weight || 70) / 2.205; // Convert lbs to kg, default to 70kg if not specified
+        const caloriesBurned = Math.round(MET * weightKg * durationHours);
+
+        // Update exercise completion status
         await db.update(userWorkoutExercise)
-            .set({ completed: true})
+            .set({ completed: true })
             .where(eq(userWorkoutExercise.workoutExerciseId, parseInt(id)));
 
-        // Get workout plan to get userId
-        const plan = await db.select()
-            .from(workoutPlans)
-            .where(eq(workoutPlans.planId, exercise[0].planId));
 
+        console.log(exercise);
         // Create record
-        const record = await db.insert(records).values({
-            userId: plan[0].userId,
-            exerciseId: exercise[0].exerciseId,
+        await db.insert(records).values({
+            userId,
+            exerciseId: exercise.exerciseId,
             date: new Date().toISOString(),
-            setsCompleted: exercise[0].sets,
-            repsCompleted: exercise[0].reps,
-            durationMin: exercise[0].durationMin,
-            weight: exercise[0].weight || 0,
-            distance: exercise[0].distance || 0,
-            caloriesBurned: 0, // TODO: calculate this based on exercise details
+            setsCompleted: exercise.sets,
+            repsCompleted: exercise.reps,
+            durationMin: exercise.durationMin,
+            weight: exercise.weight || 0,
+            distance: exercise.distance || 0,
+            caloriesBurned,
         });
 
-         res.status(200).send({ message: "Exercise completed and recorded" });
-         return;
+        res.status(200).send({ 
+            message: "Exercise completed and recorded",
+            caloriesBurned 
+        });
+        return;
     } catch (error) {
         res.status(500).send(error.message);
         return;

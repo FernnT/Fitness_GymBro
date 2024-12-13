@@ -1,5 +1,5 @@
-import { db } from "./db"; // Replace with your actual db connection file
-import { exercises, } from "./schema"; // Replace with your schema file path
+import { db } from "./models/db"; // Replace with your actual db connection file
+import { exercises, } from "./models/schema"; // Replace with your schema file path
 import type { InferModel } from 'drizzle-orm';
 
 type Exercise = InferModel<typeof exercises>;
