@@ -1,6 +1,17 @@
+// REACT STUFF
+import React from "react";
+import { BrowserRouter, Route, Routes , Link} from 'react-router-dom'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+// ROUTING
+import Login from './login.jsx'
+import Signup from './sign_up.jsx'
+import Statistics from './stats.jsx'
+import Workout from './workout.jsx'
+import Settings from './settings.jsx'
+import Workout_input from './workout_input.jsx'
+
+// PAGE SPECIFIC
 import './App.css'
 
 function App() {
@@ -8,26 +19,17 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login count={count} setCount={setCount}/>} />
+          <Route path="/log-in" element={<Login count={count} setCount={setCount}/>} />
+          <Route path="/sign-up" />
+          <Route path="/statistics" />
+          <Route path="/workout" />
+          <Route path="/settings" />
+          <Route path="/workout-input" />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

@@ -9,6 +9,7 @@ npm run dev
 ```
 npm create vite@latest my-app
 cd Fitness_GymBro
+npm install react-router-dom
 npm install
 npm run dev
 ```
