@@ -22,8 +22,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login count={count} setCount={setCount}/>} />
-          <Route path="/log-in" element={<Login count={count} setCount={setCount}/>} />
-          <Route path="/sign-up" />
+          <Route path="/log-in" element={<Login/>} />
+          <Route path="/sign-up" element={<Signup/>}/>
           <Route path="/statistics" />
           <Route path="/workout" />
           <Route path="/settings" />
