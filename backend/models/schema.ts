@@ -94,12 +94,12 @@ export const records = pgTable("Records", {
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	exerciseId: bigint("exercise_id", { mode: "number" }).notNull(),
 	date: date().notNull(),
-	setsCompleted: smallint("sets_completed"),
-	repsCompleted: smallint("reps_completed"),
-	durationMin: real("duration_min"),
-	weight: real().notNull(),
-	distance: real(),
-	caloriesBurned: real("calories_burned"),
+	setsCompleted: smallint("sets_completed").$default(() => 0).notNull(),
+	repsCompleted: smallint("reps_completed").$default(() => 0).notNull(),
+	durationMin: real("duration_min").$default(() => 0).notNull(),
+	weight: real().$default(() => 0).notNull(),
+	distance: real().$default(() => 0).notNull(),
+	caloriesBurned: real("calories_burned").$default(() => 0).notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 }, (table) => {
 	return {

@@ -56,7 +56,7 @@ export const deleteWorkoutPlan = async (req: AuthRequest, res: Response) => {
             .from(workoutPlans)
             .where(and(eq(workoutPlans.planId, planId), eq(workoutPlans.userId, userId)));
 
-        if (workoutPlanExists.length === 0) {
+        if (!workoutPlanExists.length) {
             return res.status(404).send({ error: "Workout plan not found or does not belong to the user." });
         }
 
