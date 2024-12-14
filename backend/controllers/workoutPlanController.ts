@@ -1,7 +1,7 @@
 import { Request,Response } from "express";
 import {db} from '../models/db';
 import { workoutPlans } from "../models/schema";
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import { userWorkoutExercise } from "../models/schema";
 
 interface AuthRequest extends Request {
@@ -35,7 +35,6 @@ export const getWorkoutPlans = async (req: AuthRequest, res: Response) => {
 };
 
 export const deleteWorkoutPlan = async (req: AuthRequest, res: Response) => {
-    //TODO: Implement this and test it
     try {
         const { id } = req.params; // Workout Plan ID
         const userId = req.user?.id; // Authenticated User ID
@@ -136,8 +135,8 @@ export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest
     try {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).send("User not authenticated");
-            return;
+             res.status(401).send("User not authenticated");
+             return;
         }
 
         const { id } = req.params;
@@ -266,7 +265,7 @@ export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,
         const response = Object.values(groupedData);
 
         console.log("Fetched workout plans with exercises:", response);
-        res.status(200).json(response);
+            res.status(200).json(response);
         return;
     } catch (error: any) {
         console.error("Error fetching workout plans and exercises:", error);
@@ -312,3 +311,37 @@ export const updateWorkoutPlan = async (req: AuthRequest, res: Response) => {
     }
 }
 
+export const updateWorkoutPlanProgress = async (planId: number) => {
+    try {
+        await db.update(workoutPlans)
+            .set({
+                daysCompleted: sql`${workoutPlans.daysCompleted} + 1`,
+            })
+            .where(eq(workoutPlans.planId, planId));
+
+        console.log(`Days completed incremented for planId: ${planId}`);
+
+        // Get the updated plan details
+        const [plan] = await db.select({
+            daysCompleted: workoutPlans.daysCompleted,
+            durationDays: workoutPlans.durationDays
+        })
+        .from(workoutPlans)
+        .where(eq(workoutPlans.planId, planId));
+
+        // Calculate progress as percentage
+        const progress = Math.round((plan.daysCompleted / plan.durationDays) * 100);
+
+        // Update the progress field
+        await db.update(workoutPlans)
+            .set({ progress })
+            .where(eq(workoutPlans.planId, planId));
+
+        console.log(`Progress updated to ${progress}% for planId: ${planId}`);
+        
+        return;
+    } catch (error) {
+        console.error("Error updating workout plan progress:", error);
+        throw error;
+    }
+};
