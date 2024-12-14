@@ -20,7 +20,8 @@ export const generateWorkoutPlan = async (req: AuthRequest, res: Response) => {
         const { goal, durationDays } = req.body;
         
         if (!goal || !durationDays || !userId) {
-            return res.status(400).send("Goal, durationDays, and userId are required");
+             res.status(400).send("Goal, durationDays, and userId are required");
+             return;
         }
         
         const availableExercises = await db.select().from(exercises);
