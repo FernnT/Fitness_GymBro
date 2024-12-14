@@ -282,7 +282,7 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
         if (allExercisesCompleted) {
             await updateWorkoutPlanProgress(exercise.planId);
 
-        // Reset completion status for exercises on this day
+              // Reset completion status for exercises on this day
         await db.update(userWorkoutExercise)
         .set({ completed: false })
        .where(
@@ -291,7 +291,7 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
                eq(userWorkoutExercise.day, exercise.day)
            )
        );
-    }
+        }
 
       
 
