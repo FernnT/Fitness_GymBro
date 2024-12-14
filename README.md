@@ -66,5 +66,5 @@ http://localhost:3000/auth/register
 npm run drizzle:seed
 ```
 
-## API Documentation(not yet finished)
+### API Documentation
 https://documenter.getpostman.com/view/40110318/2sAYBbeowV
