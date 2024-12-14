@@ -1,5 +1,6 @@
 import { pgTable, bigint, varchar, smallint, real, timestamp, text, foreignKey, date, boolean, pgEnum} from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
+import { InferModel } from "drizzle-orm";
 
 export const user = pgTable("User", {
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
@@ -31,6 +32,8 @@ export const exercises = pgTable("Exercises", {
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 });
 
+
+
 export const workoutPlans = pgTable("Workout Plans", {
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	planId: bigint("plan_id", { mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "Workout Plans_plan_id_seq", startWith: 1, increment: 1, minValue: 1}),
@@ -39,10 +42,10 @@ export const workoutPlans = pgTable("Workout Plans", {
 	name: varchar().notNull(),
 	intensity: varchar(),
 	durationDays: smallint("duration_days").notNull(),
-	daysCompleted: smallint("days_completed").$default(() => 0),
+	daysCompleted: smallint("days_completed").default(0).notNull(),
 	goal: varchar().notNull(),
-	progress: smallint().notNull().$default(() => 0),
-	completed: boolean().$default(() => false),
+	progress: smallint().notNull().default(0),
+	completed: boolean().default(false),
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 }, (table) => {
 	return {
@@ -63,14 +66,14 @@ export const userWorkoutExercise = pgTable("User Workout Exercise", {
 	planId: bigint("plan_id", { mode: "number" }).notNull(),
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	exerciseId: bigint("exercise_Id", { mode: "number" }).notNull(),
-	sets: smallint().$default(() => 0).notNull(),
-	reps: smallint().$default(() => 0).notNull(),
-	durationMin: real("duration_min").$default(() => 0).notNull(),
-	weight: real().$default(() => 0).notNull(),
-	distance: real().$default(() => 0).notNull(),
-	restTimePerSec: smallint("rest_time_per_set_sec").$default(() => 0).notNull(),
+	sets: smallint().default(0).notNull(),
+	reps: smallint().default(0).notNull(),
+	durationMin: real("duration_min").default(0).notNull(),
+	weight: real().default(0).notNull(),
+	distance: real().default(0).notNull(),
+	restTimePerSec: smallint("rest_time_per_set_sec").default(0).notNull(),
 	day: days().notNull(),
-	completed: boolean().notNull().$default(() => false),
+	completed: boolean().notNull().default(false),
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 }, (table) => {
 	return {
@@ -95,12 +98,12 @@ export const records = pgTable("Records", {
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	exerciseId: bigint("exercise_id", { mode: "number" }).notNull(),
 	date: date().notNull(),
-	setsCompleted: smallint("sets_completed").$default(() => 0).notNull(),
-	repsCompleted: smallint("reps_completed").$default(() => 0).notNull(),
-	durationMin: real("duration_min").$default(() => 0).notNull(),
-	weight: real().$default(() => 0).notNull(),
-	distance: real().$default(() => 0).notNull(),
-	caloriesBurned: real("calories_burned").$default(() => 0).notNull(),
+	setsCompleted: smallint("sets_completed").default(0).notNull(),
+	repsCompleted: smallint("reps_completed").default(0).notNull(),
+	durationMin: real("duration_min").default(0).notNull(),
+	weight: real().default(0).notNull(),
+	distance: real().default(0).notNull(),
+	caloriesBurned: real("calories_burned").default(0).notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 }, (table) => {
 	return {

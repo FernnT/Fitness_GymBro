@@ -4,6 +4,8 @@ import { workoutPlans } from "../models/schema";
 import { eq, and, sql } from 'drizzle-orm';
 import { userWorkoutExercise } from "../models/schema";
 
+
+
 interface AuthRequest extends Request {
     user?: {
         id: number;
