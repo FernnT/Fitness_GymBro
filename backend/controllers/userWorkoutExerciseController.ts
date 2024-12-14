@@ -14,7 +14,8 @@ export const getUserWorkoutExerciseByID = async (req: AuthRequest, res: Response
     try {
         const userId = req.user?.id;
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         const { id } = req.params;
@@ -38,7 +39,8 @@ export const getUserWorkoutExerciseByID = async (req: AuthRequest, res: Response
             );
 
         if (!result.length) {
-            return res.status(404).send("Exercise not found or unauthorized");
+            res.status(404).send("Exercise not found or unauthorized");
+            return;
         }
 
         res.status(200).send(result[0].exercise);
@@ -53,7 +55,8 @@ export const updateUserWorkoutExercise = async (req: AuthRequest, res: Response)
     try {
         const userId = req.user?.id;
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         const { id } = req.params;
@@ -77,12 +80,14 @@ export const updateUserWorkoutExercise = async (req: AuthRequest, res: Response)
             );
 
         if (!exerciseData.length) {
-            return res.status(404).send("Exercise not found or unauthorized");
+            res.status(404).send("Exercise not found or unauthorized");
+            return;
         }
 
         // Don't allow updating completed exercises
         if (exerciseData[0].exercise.completed) {
-            return res.status(400).send("Cannot update completed exercises");
+            res.status(400).send("Cannot update completed exercises");
+            return;
         }
 
         // Update the exercise
@@ -114,7 +119,8 @@ export const addExercise = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.user?.id;
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         // Verify user owns the workout plan
@@ -124,7 +130,8 @@ export const addExercise = async (req: AuthRequest, res: Response) => {
             .limit(1);
 
         if (!workoutPlan.length || workoutPlan[0].userId !== userId) {
-            return res.status(403).send("Not authorized to modify this workout plan");
+            res.status(403).send("Not authorized to modify this workout plan");
+            return;
         }
 
         await db.insert(userWorkoutExercise).values(req.body);
@@ -146,7 +153,8 @@ export const deleteUserWorkoutExercise = async (req: AuthRequest, res: Response)
     try {
         const userId = req.user?.id;
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         const { id } = req.params;
@@ -169,7 +177,8 @@ export const deleteUserWorkoutExercise = async (req: AuthRequest, res: Response)
             );
 
         if (!exercise.length) {
-            return res.status(404).send("Exercise not found or unauthorized");
+            res.status(404).send("Exercise not found or unauthorized");
+            return;
         }
 
         const planId = exercise[0].exercise.planId;
@@ -178,12 +187,14 @@ export const deleteUserWorkoutExercise = async (req: AuthRequest, res: Response)
 
         const updatedIntensity = await calculateAndUpdatePlanIntensity(planId);
 
-        return res.status(200).send({
+        res.status(200).send({  
             message: "Exercise deleted successfully",
             updatedIntensity
         });
+        return;
     } catch (error) {
-        return res.status(500).send(error.message);
+        res.status(500).send(error.message);
+        return;
     }
 }
 
@@ -191,7 +202,8 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.user?.id;
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         const { id } = req.params;
@@ -221,7 +233,8 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
             );
 
         if (!exerciseData.length) {
-            return res.status(400).send("Exercise not found, already completed, or unauthorized");
+            res.status(400).send("Exercise not found, already completed, or unauthorized");
+            return;
         }
 
         const exercise = exerciseData[0].exercise;

@@ -41,11 +41,13 @@ export const deleteWorkoutPlan = async (req: AuthRequest, res: Response) => {
         const userId = req.user?.id; // Authenticated User ID
 
         if (!id) {
-            return res.status(400).send({ error: "Plan ID is required." });
+             res.status(400).send({ error: "Plan ID is required." });
+             return;
         }
 
         if (!userId) {
-            return res.status(401).send({ error: "User not authenticated." });
+            res.status(401).send({ error: "User not authenticated." });
+            return;
         }
 
         const planId = parseInt(id);
@@ -57,7 +59,8 @@ export const deleteWorkoutPlan = async (req: AuthRequest, res: Response) => {
             .where(and(eq(workoutPlans.planId, planId), eq(workoutPlans.userId, userId)));
 
         if (!workoutPlanExists.length) {
-            return res.status(404).send({ error: "Workout plan not found or does not belong to the user." });
+            res.status(404).send({ error: "Workout plan not found or does not belong to the user." });
+            return;
         }
 
         // Delete associated userWorkoutExercise records
@@ -71,10 +74,12 @@ export const deleteWorkoutPlan = async (req: AuthRequest, res: Response) => {
             .where(eq(workoutPlans.planId, planId));
 
         console.log(`Deleted workout plan (ID: ${planId}) and its exercises.`);
-        return res.status(200).send({ message: "Workout plan and associated exercises deleted successfully." });
+        res.status(200).send({ message: "Workout plan and associated exercises deleted successfully." });
+        return;
     } catch (error: any) {
         console.error("Error deleting workout plan:", error);
-        return res.status(500).send({ error: "An unexpected error occurred." });
+        res.status(500).send({ error: "An unexpected error occurred." });
+        return;
     }
 };
 
@@ -84,7 +89,8 @@ export const getWorkoutPlanByID = async (req: AuthRequest, res: Response) => {
         const userId = req.user?.id;
         
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         const result = await db.select()
@@ -97,7 +103,8 @@ export const getWorkoutPlanByID = async (req: AuthRequest, res: Response) => {
             );
 
         if (!result.length) {
-            return res.status(404).send("Workout plan not found or unauthorized");
+            res.status(404).send("Workout plan not found or unauthorized");
+            return;
         }
 
         res.status(200).send(result[0]);
@@ -111,7 +118,8 @@ export const getWorkoutPlanByID = async (req: AuthRequest, res: Response) => {
 export const createWorkoutPlan = async(req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     if (!userId) {
-        return res.status(401).send("User not authenticated");
+        res.status(401).send("User not authenticated");
+        return;
     }
     try {
        await db.insert(workoutPlans).values({...req.body, userId});
@@ -124,24 +132,20 @@ export const createWorkoutPlan = async(req: AuthRequest, res: Response) => {
 
 }
 
-export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest,res: Response) => {
+export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest, res: Response) => {
     try {
-        const { id } = req.params;
         const userId = req.user?.id;
-
-        if (!id) {
-            return res.status(400).send({ error: "Plan ID is required" });
-        }
-
         if (!userId) {
-            return res.status(401).send({ error: "User not authenticated" });
+            res.status(401).send("User not authenticated");
+            return;
         }
 
-        // Fetch the workout plan and its exercises
+        const { id } = req.params;
+
         const result = await db
             .select({
                 plan: workoutPlans,
-                exercise: userWorkoutExercise,
+                exercises: userWorkoutExercise
             })
             .from(workoutPlans)
             .leftJoin(
@@ -155,12 +159,13 @@ export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest
                 )
             );
 
-        if (result.length === 0) {
-            return res.status(404).send({ error: "Workout plan not found or no exercises associated" });
+        if (!result.length) {
+            res.status(404).send("Workout plan not found or unauthorized");
+            return;
         }
 
-        // Structure the response
-        const workoutPlan = {
+        // Format the response
+        const formattedResponse = {
             planId: result[0].plan.planId,
             name: result[0].plan.name,
             intensity: result[0].plan.intensity,
@@ -170,40 +175,37 @@ export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest
             completed: result[0].plan.completed,
             createdAt: result[0].plan.createdAt,
             exercises: result
-                .filter((item) => item.exercise) // Filter out null exercises
-                .map((item) => ({
-                    planId: item.plan.planId,
-                    workoutExerciseId: item.exercise.workoutExerciseId,
-                    exerciseId: item.exercise.exerciseId,
-                    sets: item.exercise.sets,
-                    reps: item.exercise.reps,
-                    durationMin: item.exercise.durationMin,
-                    weight: item.exercise.weight,
-                    distance: item.exercise.distance,
-                    restTimePerSec: item.exercise.restTimePerSec,
-                    day: item.exercise.day,
-                    completed: item.exercise.completed,
-                    createdAt: item.exercise.createdAt,
-                })),
+                .filter(r => r.exercises) // Filter out null exercises
+                .map(r => ({
+                    workoutExerciseId: r.exercises.workoutExerciseId,
+                    exerciseId: r.exercises.exerciseId,
+                    sets: r.exercises.sets,
+                    reps: r.exercises.reps,
+                    durationMin: r.exercises.durationMin,
+                    weight: r.exercises.weight,
+                    distance: r.exercises.distance,
+                    restTimePerSec: r.exercises.restTimePerSec,
+                    day: r.exercises.day,
+                    completed: r.exercises.completed,
+                    createdAt: r.exercises.createdAt
+                }))
         };
 
-        console.log("Fetched workout plan with exercises:", workoutPlan);
-        return res.status(200).json(workoutPlan);
-    } catch (error: any) {
-        console.error("Error fetching workout plan by ID:", error);
-        return res.status(500).send({ error: "An unexpected error occurred." });
+        res.status(200).json(formattedResponse);
+        return;
+    } catch (error) {
+        res.status(500).send(error.message);
+        return;
     }
-};
-
+}
 
 export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,res: Response) => {
     try {
         const userId = req.user?.id;
 
         if (!userId) {
-            return res
-                .status(400)
-                .send({ error: "User ID is missing from the request." });
+            res.status(400).send({ error: "User ID is missing from the request." });
+            return;
         }
 
         // Fetch workout plans and associated exercises
@@ -217,9 +219,8 @@ export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,
             .where(eq(workoutPlans.userId, userId));
 
         if (result.length === 0) {
-            return res
-                .status(404)
-                .send({ message: "No workout plans or exercises found for the user." });
+            res.status(404).send({ message: "No workout plans or exercises found for the user." });
+            return;
         }
 
         // Group exercises by workout plan
@@ -266,9 +267,11 @@ export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,
 
         console.log("Fetched workout plans with exercises:", response);
         res.status(200).json(response);
+        return;
     } catch (error: any) {
         console.error("Error fetching workout plans and exercises:", error);
         res.status(500).send({ error: "An unexpected error occurred." });
+        return;
     }
 };
 
@@ -278,7 +281,8 @@ export const updateWorkoutPlan = async (req: AuthRequest, res: Response) => {
         const userId = req.user?.id;
 
         if (!userId) {
-            return res.status(401).send("User not authenticated");
+            res.status(401).send("User not authenticated");
+            return;
         }
 
         // Verify the workout plan exists and belongs to the user
@@ -292,7 +296,8 @@ export const updateWorkoutPlan = async (req: AuthRequest, res: Response) => {
             );
 
         if (!workoutPlan.length) {
-            return res.status(404).send("Workout plan not found or unauthorized");
+            res.status(404).send("Workout plan not found or unauthorized");
+            return;
         }
 
         await db.update(workoutPlans)

@@ -4,8 +4,8 @@ import { getExerciseByID, getExercises } from "../controllers/exerciseController
 
 const exerciseRoutes = Router();
 
-exerciseRoutes.get("/getExercises", getExercises); 
-exerciseRoutes.get("/getExerciseByID/:id", getExerciseByID);
+exerciseRoutes.get("/getExercises", authMiddleware, getExercises); 
+exerciseRoutes.get("/getExerciseByID/:id", authMiddleware, getExerciseByID);
 
 
 //USE THIS ROUTE IF YOU WANT TO PROTECT THE ENDPOINT // AFTER ALL IS DONE

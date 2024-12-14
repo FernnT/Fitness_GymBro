@@ -5,7 +5,7 @@ import  authRoutes  from "./routes/authRoutes";
 import exerciseRoutes from "./routes/exerciseRoutes";
 import workoutPlanRoutes from "./routes/workoutPlanRoutes";
 import userWorkoutExerciseRoutes from "./routes/userWorkoutExerciseRoutes";
-
+import recordsRoutes from "./routes/recordsRoutes";
 //TODO: 
 // edit entries
 // calculate calories burned
@@ -22,7 +22,7 @@ app.use('/auth', authRoutes);
 app.use('/exercise', exerciseRoutes);
 app.use('/workoutPlan', workoutPlanRoutes);
 app.use('/userWorkoutExercise', userWorkoutExerciseRoutes);
-
+app.use('/records', recordsRoutes);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
