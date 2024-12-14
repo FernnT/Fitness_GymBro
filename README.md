@@ -29,6 +29,8 @@ npm run dev
 - **PostgreSQ**
 - **Drizzle ORM**
 - **AI (for workout generation)
+- ## API Documentation
+https://documenter.getpostman.com/view/40110318/2sAYBbeowV
 
 ## HOW TO SETUP
 1. Download and install Postgresql
@@ -65,6 +67,3 @@ http://localhost:3000/auth/register
 ```bash
 npm run drizzle:seed
 ```
-
-## API Documentation
-https://documenter.getpostman.com/view/40110318/2sAYBbeowV
