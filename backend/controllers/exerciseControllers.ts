@@ -1,6 +1,8 @@
 import { Request,Response } from "express";
 import {db} from '../models/db';
 import { exercises } from "../models/schema";
+import { eq } from "drizzle-orm";
+
 
 export const getExercises = async (req: Request, res: Response) => {
     try {
@@ -14,6 +16,13 @@ export const getExercises = async (req: Request, res: Response) => {
     }
 }
 
-export const getExerciseByID = (req: Request, res: Response) => {  
-        
+export const getExerciseByID = async (req: Request, res: Response) => {  
+    try {
+        const result = await db.select().from(exercises).where(eq(exercises.exerciseId, parseInt(req.params.id)));
+        res.status(200).send(result);
+        return;
+    } catch (error) {
+        res.status(500).send(error.message);
+        return;
+    }
 }
