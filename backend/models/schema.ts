@@ -39,9 +39,10 @@ export const workoutPlans = pgTable("Workout Plans", {
 	name: varchar().notNull(),
 	intensity: varchar(),
 	durationDays: smallint("duration_days").notNull(),
+	daysCompleted: smallint("days_completed").$default(() => 0),
 	goal: varchar().notNull(),
 	progress: smallint().notNull().$default(() => 0),
-	completed: boolean().notNull().$default(() => false),
+	completed: boolean().$default(() => false),
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 }, (table) => {
 	return {

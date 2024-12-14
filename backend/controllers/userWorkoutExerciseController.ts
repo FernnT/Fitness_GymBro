@@ -3,6 +3,7 @@ import {db} from '../models/db';
 import { records, userWorkoutExercise, workoutPlans, exercises } from "../models/schema";
 import { eq, avg, and } from 'drizzle-orm';
 import { calculateAndUpdatePlanIntensity } from '../utils/intensityCalculator';
+import {updateWorkoutPlanProgress } from './workoutPlanController';
 
 interface AuthRequest extends Request {
     user?: {
@@ -244,17 +245,16 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
         // Basic formula: (MET value * weight in kg * duration in hours)
         // MET values: Strength training ≈ 3.5, Cardio ≈ 7.0
         const MET = exerciseDetails.metValue;
-        const durationHours = (exercise.durationMin || 0) / 60;
+        let durationMin = (exercise.durationMin || 0) / 60;
+        durationMin = durationMin === 0 ? 1 : durationMin;
         const weightKg = (exercise.weight || 70) / 2.205; // Convert lbs to kg, default to 70kg if not specified
-        const caloriesBurned = Math.round(MET * weightKg * durationHours);
+        const calories_Burned = Math.round(MET * weightKg * durationMin);
 
         // Update exercise completion status
         await db.update(userWorkoutExercise)
             .set({ completed: true })
             .where(eq(userWorkoutExercise.workoutExerciseId, parseInt(id)));
 
-
-        console.log(exercise);
         // Create record
         await db.insert(records).values({
             userId,
@@ -265,12 +265,39 @@ export const completeExercise = async (req: AuthRequest, res: Response) => {
             durationMin: exercise.durationMin,
             weight: exercise.weight || 0,
             distance: exercise.distance || 0,
-            caloriesBurned,
+            caloriesBurned: calories_Burned,
         });
+
+        // Get all exercises for the same plan and day
+        const exercisesForDay = await db.select()
+            .from(userWorkoutExercise)
+            .where(
+                and(
+                    eq(userWorkoutExercise.planId, exercise.planId),
+                    eq(userWorkoutExercise.day, exercise.day)
+                )
+            );
+        // Check if all exercises for this day are completed
+        const allExercisesCompleted = exercisesForDay.every(ex => ex.completed);
+        if (allExercisesCompleted) {
+            await updateWorkoutPlanProgress(exercise.planId);
+
+        // Reset completion status for exercises on this day
+        await db.update(userWorkoutExercise)
+        .set({ completed: false })
+       .where(
+           and(
+               eq(userWorkoutExercise.planId, exercise.planId),
+               eq(userWorkoutExercise.day, exercise.day)
+           )
+       );
+    }
+
+      
 
         res.status(200).send({ 
             message: "Exercise completed and recorded",
-            caloriesBurned 
+            calories_Burned,
         });
         return;
     } catch (error) {
