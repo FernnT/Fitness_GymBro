@@ -24,10 +24,10 @@ function App() {
           <Route path="/" element={<Login count={count} setCount={setCount}/>} />
           <Route path="/log-in" element={<Login/>} />
           <Route path="/sign-up" element={<Signup/>}/>
-          <Route path="/statistics" />
-          <Route path="/workout" />
-          <Route path="/settings" />
-          <Route path="/workout-input" />
+          <Route path="/statistics" element={<Statistics/>}/>
+          <Route path="/workout" element={<Workout/>}/>
+          <Route path="/settings" element={<Settings/>}/>
+          <Route path="/workout-input" element={<Workout_input/>}/>
         </Routes>
       </BrowserRouter>
     </>

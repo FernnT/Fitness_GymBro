@@ -1,14 +1,13 @@
 import './App.css'
 
-const LogIn = ({ count, setCount }) => {
+const Workout = () => {
   return (
     <>
       <h1>WORKOUT</h1>
-      <button onClick={() => setCount(count => (count  + 1))}>
-        COCK SIZE is {count}
-      </button>
+      <h2>Create new workout</h2>
+      <h2>Your workout today</h2>
     </>
   );
 };
 
-export default LogIn
+export default Workout
