@@ -1,14 +1,13 @@
 import './App.css'
 
-const LogIn = ({ count, setCount }) => {
+const Stats = () => {
   return (
     <>
-      <h1>STATISTICS</h1>
-      <button onClick={() => setCount(count => (count  + 1))}>
-        COCK SIZE is {count}
-      </button>
+      <h1>WORKOUT</h1>
+      <h2>personal best</h2>
+      <h2>graphs</h2>
     </>
   );
 };
 
-export default LogIn
+export default Stats
