@@ -89,3 +89,141 @@
 .save-button:hover {
   background-color: #218838;
 }
+
+
+
+/* Container Styling */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #333;
+  color: #fff;
+  font-family: "Arial", sans-serif;
+}
+
+/* Header Styling */
+.settings-header {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Form Styling */
+.settings-form {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Field Styling */
+.settings-field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input Styling */
+.settings-input {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #fff;
+  margin-top: 0.5rem;
+}
+
+/* Checkbox Styling */
+.settings-checkbox {
+  margin-right: 10px;
+}
+
+/* Button Styling */
+.settings-button {
+  padding: 0.7rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.settings-button:hover {
+  background-color: #0056b3;
+}
+
+/* Delete Button Styling */
+.delete-button {
+  background-color: red;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
+
+/* Confirm Delete Button */
+.confirm-delete {
+  background-color: orange;
+}
+
+.confirm-delete:hover {
+  background-color: #ff9900;
+}
+
+
+
+.stats-container {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stats-header {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stats-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.stats-card p {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+  color: #111;
+}
+
+.stats-chart {
+  margin-top: 2rem;
+  padding: 1rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
