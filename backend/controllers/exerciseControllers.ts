@@ -1,12 +1,11 @@
 import { Request,Response } from "express";
 import {db} from '../models/db';
 import { exercises } from "../models/schema";
-import { eq } from "drizzle-orm";
-
+import { eq,asc } from "drizzle-orm";
 
 export const getExercises = async (req: Request, res: Response) => {
     try {
-        const result = await db.select().from(exercises);
+        const result = await db.select().from(exercises).orderBy(asc(exercises.name));
          res.status(200).send(result)
          return;
     } catch (error) {

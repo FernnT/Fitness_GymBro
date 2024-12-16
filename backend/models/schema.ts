@@ -33,7 +33,7 @@ export const exercises = pgTable("Exercises", {
 });
 
 
-
+export type WorkoutPlan = InferModel<typeof workoutPlans>;
 export const workoutPlans = pgTable("Workout Plans", {
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	planId: bigint("plan_id", { mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "Workout Plans_plan_id_seq", startWith: 1, increment: 1, minValue: 1}),

@@ -1,6 +1,6 @@
 import { Request,Response } from "express";
 import {db} from '../models/db';
-import { workoutPlans } from "../models/schema";
+import { WorkoutPlan, workoutPlans } from "../models/schema";
 import { eq, and, sql } from 'drizzle-orm';
 import { userWorkoutExercise } from "../models/schema";
 
@@ -121,6 +121,10 @@ export const createWorkoutPlan = async(req: AuthRequest, res: Response) => {
     if (!userId) {
         res.status(401).send("User not authenticated");
         return;
+    }
+    if (!req.body.name || !req.body.goal || !req.body.durationDays) {
+         res.status(400).send({ error: "Missing required fields in the request body." });
+         return
     }
     try {
        await db.insert(workoutPlans).values({...req.body, userId});
@@ -315,9 +319,10 @@ export const updateWorkoutPlan = async (req: AuthRequest, res: Response) => {
 
 export const updateWorkoutPlanProgress = async (planId: number) => {
     try {
+        // Update the days completed in a single query
         await db.update(workoutPlans)
             .set({
-                daysCompleted: sql`${workoutPlans.daysCompleted} + 1`,
+                daysCompleted: sql`${workoutPlans.daysCompleted} + 1`, // Increment by 1
             })
             .where(eq(workoutPlans.planId, planId));
 
@@ -333,17 +338,18 @@ export const updateWorkoutPlanProgress = async (planId: number) => {
 
         // Calculate progress as percentage
         const progress = Math.round((plan.daysCompleted / plan.durationDays) * 100);
-
+    
         // Update the progress field
         await db.update(workoutPlans)
-            .set({ progress })
+            .set({
+                progress: progress // Update progress to calculated value
+            })
             .where(eq(workoutPlans.planId, planId));
 
         console.log(`Progress updated to ${progress}% for planId: ${planId}`);
-        
-        return;
+
     } catch (error) {
         console.error("Error updating workout plan progress:", error);
-        throw error;
+        throw error; // Re-throw to propagate the error
     }
 };
