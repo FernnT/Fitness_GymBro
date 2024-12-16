@@ -2,6 +2,8 @@
 import axios from "axios";
 import React from "react";
 import {Link} from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+
 
 // PAGE SPECIFIC
 import './App.css'
@@ -36,13 +38,20 @@ const createWorkout = async (navigate) => {
       form_data, config
     );
     console.log('Response:', response)
+    if(response.status === 200){
+      document.cookie = JSON.stringify(response.data)
+      console.log("COOKIES IN PLAIN TEXT", document.cookie)
+      check_if_already_logged_in(navigate)
+    }
   } catch (error) {
     console.error('Error:', error)
   }
   
 };
 
-const WorkoutInput = () => {
+const WorkoutEdit = () => {
+  const { id } = useParams();
+
   return (
     <>
       <h1><Link to = "/workout"> &lt; </Link> WORKOUT INPUT (temp)</h1>
@@ -61,4 +70,4 @@ const WorkoutInput = () => {
   );
 };
 
-export default WorkoutInput
+export default WorkoutEdit

@@ -5,16 +5,23 @@ import {Link} from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 
 const check_if_already_logged_in = (navigate) => {
-  const cookies = JSON.parse(document.cookie);
-
-  console.log("CHECKING IF LOGGED IN");
-  if (cookies.token) {
-    console.log("CHECKED THE TOKEN");
-    navigate("/workout");
+  
+  try{
+    if(document.cookie){
+      const cookies = JSON.parse(document.cookie);
+      console.log("CHECKING IF LOGGED IN")
+      if (cookies.token) {
+        console.log("CHECKED THE TOKEN")
+        navigate("/workout")
+      }
+    }
+  }catch (error) {
+    console.error('Error:', error);
   }
+  
 };
 
-const sendData = async () => {
+const sendData = async (navigate) => {
   
   //GET FORM DATA FROM INPUT
   const form_data = {
@@ -23,11 +30,16 @@ const sendData = async () => {
   }
   form_data.email = document.getElementById("email").value
   form_data.password = document.getElementById("password").value
-  console.log('FORM DATA:', form_data);
+  console.log('FORM DATA:', form_data)
 
   // GET CURRENCT COOKIES TO JSON
-  const cookies = JSON.parse(document.cookie)
-  console.log('COOKIES IN JSON', cookies)
+
+  if(document.cookie){
+    console.log('RAW COOKIES', document.cookie)
+    const cookies = JSON.parse(document.cookie)
+    console.log('COOKIES IN JSON', cookies)
+  }
+  
 
   //API CALL
   try {
@@ -39,10 +51,12 @@ const sendData = async () => {
     if(response.status === 200){
       document.cookie = JSON.stringify(response.data)
       console.log("COOKIES IN PLAIN TEXT", document.cookie)
+      check_if_already_logged_in(navigate)
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error)
   }
+  
 };
 
 const LogIn = ({token}) => {
@@ -62,7 +76,7 @@ const LogIn = ({token}) => {
       <label>Password:</label>
       <input type="password" id="password" name="password" required/><br></br>
 
-      <button onClick={() => sendData()}>
+      <button onClick={() => sendData(navigate)}>
         SUBMIT
       </button>
     </>

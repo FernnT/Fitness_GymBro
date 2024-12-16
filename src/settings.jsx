@@ -1,4 +1,14 @@
+// REACT STUFF
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// PAGE SPECIFIC
+import './App.css'
+
+//COMPONENTS
+import Main_nav_bar from './main-nav-bar.jsx'
+
+
 
 const SettingsTab = () => {
   const [settings, setSettings] = useState({
@@ -33,6 +43,16 @@ const SettingsTab = () => {
     console.log("Saved settings:", settings);
     alert("Settings saved!");
   };
+
+  
+  const navigate = useNavigate()
+  const handleLogOut = () => {
+    document.cookie = "0";
+    console.log("COOKIES IN PLAIN TEXT: ", document.cookie)
+  
+    navigate("/log-in")
+  };
+  
 
   return (
     <div className="settings-container">
@@ -118,6 +138,16 @@ const SettingsTab = () => {
           {deleteConfirmation ? "Confirm Delete" : "Delete Account"}
         </button>
       </form>
+      {/* LOG OUT */}
+      <button
+        type="button"
+        onClick={() => handleLogOut()}
+      >
+        LOG OUT
+      </button>
+
+
+      <Main_nav_bar/>
     </div>
   );
 };
