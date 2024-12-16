@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt,{ JwtPayload } from "jsonwebtoken";
-
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const secretKey = process.env.JWT_SECRET; 
 
@@ -9,7 +8,7 @@ interface CustomRequest extends Request {
 }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const token = req.cookies.token;
 
   if (!token) {
      res.status(401).send({ error: "Access denied. No token provided." });
