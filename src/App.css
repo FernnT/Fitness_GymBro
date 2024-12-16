@@ -156,62 +156,96 @@
 }
 
 
-
-
-
-.workout-input-container {
-  margin: 2rem auto;
-  padding: 2rem;
-  max-width: 600px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* WORKOUT INPUT*/
+.workout-container {
+  background-color: #000; /* Dark background */
+  color: #fff; /* White text */
+  min-height: 100vh;
+  font-family: "Arial", sans-serif;
+  padding: 1rem;
 }
 
+/* Header */
 .workout-header {
-  text-align: center;
   font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #333;
+  text-align: center;
+  margin: 1rem 0;
+  font-weight: bold;
 }
 
-.workout-form {
+/* Section Titles */
+.workout-section-title {
+  font-size: 1.2rem;
+  margin: 1rem 0 0.5rem;
+  color: #fff;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+/* Input Rows */
+.workout-option {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.workout-field {
-  display: flex;
-  flex-direction: column;
-}
-
-.workout-field label {
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
   font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: #555;
+  color: #fff;
 }
 
-.workout-input,
-.workout-select {
+.workout-option input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #555;
+  color: #fff;
   padding: 0.5rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  text-align: right;
+  outline: none;
+  width: 50%;
 }
 
-.workout-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+.workout-option input::placeholder {
+  color: #888;
+}
+
+/* Save Button */
+.save-button {
+  background-color: #444;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 0.8rem;
+  margin: 1.5rem auto;
+  display: block;
+  font-size: 1rem;
   cursor: pointer;
   text-align: center;
+  border-radius: 5px;
+  width: 90%;
 }
 
-.workout-button:hover {
-  background-color: #45a049;
+.save-button:hover {
+  background-color: #666;
 }
+
+/* Bottom Navigation */
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 0;
+  background-color: #111;
+  border-top: 1px solid #333;
+}
+
+.nav-icon {
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 
