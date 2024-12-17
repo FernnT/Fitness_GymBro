@@ -93,30 +93,32 @@
 
 
 
-
-/* Page Container */
+/* SETTINGS */
 .page-container {
-  background-color: #000;
-  color: #fff;
+  background-color: #000; /* Black Background */
+  color: #fff; /* White Text */
+  font-family: "Helvetica", sans-serif;
   min-height: 100vh;
-  font-family: "Arial", sans-serif;
-  padding: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-/* Page Header */
+/* Header Title */
 .page-header {
-  font-size: 2rem;
   text-align: center;
-  margin-bottom: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 /* Section Titles */
 .section-title {
-  font-size: 1rem;
-  color: #888;
-  margin: 1rem 0 0.5rem;
+  font-size: 0.9rem;
+  color: #888; /* Gray Text */
   text-transform: uppercase;
+  margin: 1rem 0 0.5rem;
 }
 
 /* Section Items */
@@ -125,44 +127,122 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #222; /* Subtle border */
+  font-size: 1.1rem;
+}
+
+.section-item:hover {
+  background-color: #111; /* Hover Effect */
   cursor: pointer;
-  font-size: 1rem;
 }
 
-.section-item input {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  text-align: right;
-  outline: none;
-}
-
-.section-item input::placeholder {
-  color: #555;
-}
-
-/* Arrow Icon */
 .arrow {
   color: #555;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
-/* Bottom Navigation */
+/* Bottom Navigation Bar */
 .bottom-navigation {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   justify-content: space-around;
-  padding: 1rem 0;
   background-color: #111;
-  border-top: 1px solid #333;
+  padding: 1rem 0;
+  border-top: 1px solid #222;
 }
 
 .nav-icon {
+  color: #555;
   font-size: 1.5rem;
+}
+
+.nav-icon.active {
+  color: #fff; /* Highlight active icon */
+}
+
+
+/* WORKOUT INPUT */
+.page-container {
+  background-color: #000; /* Black Background */
+  color: #fff; /* White Text */
+  font-family: "Helvetica", sans-serif;
+  min-height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+.page-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Form Container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #888; /* Subtle Gray */
+}
+
+.form-group input {
+  background-color: #111; /* Dark Input Background */
+  color: #fff; /* White Text */
+  border: 1px solid #222; /* Subtle Border */
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #666; /* Slight Highlight */
+}
+
+/* Submit Button */
+.submit-button {
+  background-color: #444;
   color: #fff;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.submit-button:hover {
+  background-color: #666; /* Hover State */
+}
+
+/* Bottom Navigation Bar */
+.bottom-navigation {
+  display: flex;
+  justify-content: space-around;
+  background-color: #111;
+  padding: 1rem 0;
+  border-top: 1px solid #222;
+}
+
+.nav-icon {
+  color: #555;
+  font-size: 1.5rem;
+}
+
+.nav-icon.active {
+  color: #fff; /* Highlight active icon */
 }
