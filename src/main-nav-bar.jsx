@@ -7,11 +7,11 @@ import './App.css'
 const Stats = () => {
   return (
     <>
-      <ul>
-        <li><Link to = "/statistics">Statistics</Link></li>
-        <li><Link to = "/workout">Workout</Link></li>
-        <li><Link to = "/settings">Settings</Link></li>
-      </ul>
+      <div className="bottom-navigation">
+        <span className="nav-icon"><Link to = "/statistics">🏠</Link> </span>
+        <span className="nav-icon"><Link to = "/workout">🏋️</Link></span>
+        <span className="nav-icon active"><Link to = "/settings">⚙️</Link></span>
+      </div>
     </>
   );
 };

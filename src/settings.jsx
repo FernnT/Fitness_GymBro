@@ -108,17 +108,17 @@ const SettingsTab = () => {
         </div>
       </div>
 
-        {/* Delete Account */}
-        <button
-          type="button"
-          onClick={handleDeleteAccount}
-          className={`settings-button ${
-            deleteConfirmation ? "confirm-delete" : "delete-button"
-          }`}
-        >
-          {deleteConfirmation ? "Confirm Delete" : "Delete Account"}
-        </button>
-      </form>
+      {/* Delete Account */}
+      <button
+        type="button"
+        onClick={handleDeleteAccount}
+        className={`settings-button ${
+          deleteConfirmation ? "confirm-delete" : "delete-button"
+        }`}
+      >
+        {deleteConfirmation ? "Confirm Delete" : "Delete Account"}
+      </button>
+      
       {/* LOG OUT */}
       <button
         type="button"
