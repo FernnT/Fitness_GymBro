@@ -2,6 +2,7 @@
 import axios from "axios";
 import React from "react";
 import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 // PAGE SPECIFIC
 import './App.css'
@@ -22,10 +23,9 @@ const createWorkout = async (navigate) => {
   // GET CURRENCT COOKIES TO JSON
   
   console.log('RAW COOKIES', document.cookie)
-  const cookies = JSON.parse(document.cookie)
-  console.log('COOKIES IN JSON', cookies)
+  const token = Cookies.get('token');
   const config = {
-    headers: { Authorization: `Bearer ${cookies.token}` }
+    headers: { Authorization: `Bearer ${token}` }
   };
   console.log('CONFIG DATA:', config)
 

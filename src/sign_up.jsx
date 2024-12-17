@@ -32,7 +32,7 @@ const sendData = async () => {
     
     console.log('Response:', response)
     if(response.status === 200){
-      document.cookie.token = response.data.token
+      Cookies.set('token', response.data.token, { expires: 7 })
       console.log(document.cookie)
     }
   } catch (error) {

@@ -1,6 +1,7 @@
 // REACT STUFF
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 // PAGE SPECIFIC
 import './App.css'
@@ -47,7 +48,7 @@ const SettingsTab = () => {
   
   const navigate = useNavigate()
   const handleLogOut = () => {
-    document.cookie = "0";
+    Cookies.remove('token');
     console.log("COOKIES IN PLAIN TEXT: ", document.cookie)
   
     navigate("/log-in")

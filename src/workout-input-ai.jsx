@@ -2,6 +2,7 @@
 import axios from "axios";
 import React from "react";
 import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 // PAGE SPECIFIC
 import './App.css'
@@ -19,10 +20,9 @@ const createWorkout = async (navigate) => {
 
   // GET CURRENCT COOKIES TO JSON
   console.log('RAW COOKIES', document.cookie)
-  const cookies = JSON.parse(document.cookie)
-  console.log('COOKIES IN JSON', cookies)
+  const token = Cookies.get('token');
   const config = {
-    headers: { Authorization: `Bearer ${cookies.token}` }
+    headers: { Authorization: `Bearer ${token}` }
   };
   console.log('CONFIG DATA:', config)
 
@@ -33,11 +33,6 @@ const createWorkout = async (navigate) => {
       form_data, config
     );
     console.log('Response:', response)
-    if(response.status === 200){
-      document.cookie = JSON.stringify(response.data)
-      console.log("COOKIES IN PLAIN TEXT", document.cookie)
-      check_if_already_logged_in(navigate)
-    }
   } catch (error) {
     console.error('Error:', error)
   }
@@ -54,6 +49,8 @@ const WorkoutInput = () => {
       <label>Goal:</label>
       <input type="goal" id="goal" name="goal" required/><br></br>
       
+      <p>please wait a while after submitting, the AI may take a minute</p>
+
       <button onClick={() => createWorkout()}>
         SUBMIT
       </button>

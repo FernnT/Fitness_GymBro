@@ -3,14 +3,15 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import {Link} from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const check_if_already_logged_in = (navigate) => {
   
   try{
     if(document.cookie){
-      const cookies = JSON.parse(document.cookie);
+      const token = Cookies.get('token');
       console.log("CHECKING IF LOGGED IN")
-      if (cookies.token) {
+      if (token) {
         console.log("CHECKED THE TOKEN")
         navigate("/workout")
       }
@@ -34,10 +35,9 @@ const sendData = async (navigate) => {
 
   // GET CURRENCT COOKIES TO JSON
 
-  if(document.cookie){
-    console.log('RAW COOKIES', document.cookie)
-    const cookies = JSON.parse(document.cookie)
-    console.log('COOKIES IN JSON', cookies)
+  const token = Cookies.get('token');
+  if(token){
+    console.log('RAW COOKIES', token)
   }
   
 
@@ -49,7 +49,7 @@ const sendData = async (navigate) => {
     );
     console.log('Response:', response)
     if(response.status === 200){
-      document.cookie = JSON.stringify(response.data)
+      Cookies.set('token', response.data.token, { expires: 7 })
       console.log("COOKIES IN PLAIN TEXT", document.cookie)
       check_if_already_logged_in(navigate)
     }

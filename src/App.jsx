@@ -12,8 +12,9 @@ import Settings from './settings.jsx'
 
 import Workout_input from './workout_input.jsx'
 import Workout_input_ai from './workout-input-ai.jsx'
-import Workout_edit from './workout-edit.jsx'
 import Workouts_current from './workouts-current.jsx'
+
+import Edit_workout_plan from './edit-workout-plan.jsx'
 
 // PAGE SPECIFIC
 import './App.css'
@@ -35,8 +36,9 @@ function App() {
           
           <Route path="/workout-input" element={<Workout_input/>}/>
           <Route path="/workout-input-ai" element={<Workout_input_ai/>}/>
-          <Route path="/workout-edit" element={<Workout_edit/>}/>
           <Route path="/workouts-current" element={<Workouts_current/>}/>
+          
+          <Route path="/edit-workout-plan/:id" element={<Edit_workout_plan/>}/>
         </Routes>
       </BrowserRouter>
     </>

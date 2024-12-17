@@ -12,10 +12,9 @@ const Workout = () => {
   return (
     <>
       <h1>WORKOUT</h1>
-      <h2><Link to = "/workout-input-ai">AI workout plan</Link></h2>
-      <h2><Link to = "/workout-input">Create new workout</Link></h2>
-      <h2><Link to = "/workouts-current">Current workout plans</Link></h2>
-      <h2>Your workout today</h2>
+      <h2><Link to = "/workout-input-ai">Create workout plan with AI</Link></h2>
+      <h2><Link to = "/workout-input">Create new workout plan</Link></h2>
+      <h2><Link to = "/workouts-current">My workouts</Link></h2>
       <Main_nav_bar/>
     </>
   );
