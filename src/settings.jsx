@@ -1,125 +1,67 @@
 import React, { useState } from "react";
+import "./App.css";
 
-const SettingsTab = () => {
-  const [settings, setSettings] = useState({
-    theme: "light",
-    notifications: true,
-    username: "",
-    password: "",
-  });
-
-  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleDeleteAccount = () => {
-    if (!deleteConfirmation) {
-      alert("Click delete again to confirm.");
-      setDeleteConfirmation(true);
-      return;
-    }
-    console.log("Account deleted.");
-    alert("Account deleted.");
-  };
-
-  const saveSettings = () => {
-    console.log("Saved settings:", settings);
-    alert("Settings saved!");
-  };
-
+const SettingsPage = () => {
   return (
-    <div className="settings-container">
-      <h1 className="settings-header">Settings</h1>
-      <form className="settings-form">
-        {/* Theme Selector */}
-        <div className="settings-field">
-          <label>
-            Theme:
-            <select
-              name="theme"
-              value={settings.theme}
-              onChange={handleInputChange}
-              className="settings-input"
-            >
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-          </label>
+    <div className="page-container">
+      {/* Page Title */}
+      <h1 className="page-header">Settings</h1>
+
+      {/* About Section */}
+      <div className="section">
+        <h2 className="section-title">About</h2>
+        <div className="section-item">
+          <span>License</span>
+          <span className="arrow">›</span>
         </div>
-
-        {/* Notifications Toggle */}
-        <div className="settings-field">
-          <label>
-            <input
-              type="checkbox"
-              name="notifications"
-              checked={settings.notifications}
-              onChange={handleInputChange}
-              className="settings-checkbox"
-            />
-            Enable Notifications
-          </label>
+        <div className="section-item">
+          <span>Privacy Policy</span>
+          <span className="arrow">›</span>
         </div>
-
-        {/* Change Username */}
-        <div className="settings-field">
-          <label>
-            Change Username:
-            <input
-              type="text"
-              name="username"
-              value={settings.username}
-              placeholder="Enter new username"
-              onChange={handleInputChange}
-              className="settings-input"
-            />
-          </label>
+        <div className="section-item">
+          <span>Terms of Service</span>
+          <span className="arrow">›</span>
         </div>
+      </div>
 
-        {/* Change Password */}
-        <div className="settings-field">
-          <label>
-            Change Password:
-            <input
-              type="password"
-              name="password"
-              value={settings.password}
-              placeholder="Enter new password"
-              onChange={handleInputChange}
-              className="settings-input"
-            />
-          </label>
+      {/* Contact Us Section */}
+      <div className="section">
+        <h2 className="section-title">Contact Us</h2>
+        <div className="section-item">
+          <span>Report an Issue</span>
+          <span className="arrow">›</span>
         </div>
+        <div className="section-item">
+          <span>Rate on App Store</span>
+          <span className="arrow">›</span>
+        </div>
+      </div>
 
-        {/* Save Button */}
-        <button
-          type="button"
-          onClick={saveSettings}
-          className="settings-button"
-        >
-          Save Settings
-        </button>
+      {/* Account Section */}
+      <div className="section">
+        <h2 className="section-title">Account</h2>
+        <div className="section-item">
+          <span>Change Password</span>
+          <span className="arrow">›</span>
+        </div>
+        <div className="section-item">
+          <span>Change Username</span>
+          <span className="arrow">›</span>
+        </div>
+        <div className="section-item">
+          <span>Delete Account</span>
+          <span className="arrow">›</span>
+        </div>
+      </div>
 
-        {/* Delete Account */}
-        <button
-          type="button"
-          onClick={handleDeleteAccount}
-          className={`settings-button ${
-            deleteConfirmation ? "confirm-delete" : "delete-button"
-          }`}
-        >
-          {deleteConfirmation ? "Confirm Delete" : "Delete Account"}
-        </button>
-      </form>
+      {/* Bottom Navigation */}
+      <div className="bottom-navigation">
+        <span className="nav-icon">🏠</span>
+        <span className="nav-icon">🏋️</span>
+        <span className="nav-icon active">⚙️</span>
+      </div>
     </div>
   );
 };
 
-export default SettingsTab;
+export default SettingsPage;
