@@ -1,7 +1,61 @@
+// REACT STUFF
 import React, { useState } from "react";
-import "./App.css";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
-const SettingsPage = () => {
+// PAGE SPECIFIC
+import './App.css'
+
+//COMPONENTS
+import Main_nav_bar from './main-nav-bar.jsx'
+
+
+
+const SettingsTab = () => {
+  const [settings, setSettings] = useState({
+    theme: "light",
+    notifications: true,
+    username: "",
+    password: "",
+  });
+
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleDeleteAccount = () => {
+    if (!deleteConfirmation) {
+      alert("Click delete again to confirm.");
+      setDeleteConfirmation(true);
+      return;
+    }
+    console.log("Account deleted.");
+    alert("Account deleted.");
+  };
+
+  const saveSettings = () => {
+    console.log("Saved settings:", settings);
+    alert("Settings saved!");
+  };
+
+  
+  const navigate = useNavigate()
+  const handleLogOut = () => {
+    Cookies.remove('token');
+    console.log("COOKIES IN PLAIN TEXT: ", document.cookie)
+  
+    navigate("/log-in")
+  };
+  
+
+
   return (
     <div className="page-container">
       {/* Page Title */}
@@ -54,14 +108,29 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="bottom-navigation">
-        <span className="nav-icon">🏠</span>
-        <span className="nav-icon">🏋️</span>
-        <span className="nav-icon active">⚙️</span>
-      </div>
+        {/* Delete Account */}
+        <button
+          type="button"
+          onClick={handleDeleteAccount}
+          className={`settings-button ${
+            deleteConfirmation ? "confirm-delete" : "delete-button"
+          }`}
+        >
+          {deleteConfirmation ? "Confirm Delete" : "Delete Account"}
+        </button>
+      </form>
+      {/* LOG OUT */}
+      <button
+        type="button"
+        onClick={() => handleLogOut()}
+      >
+        LOG OUT
+      </button>
+
+
+      <Main_nav_bar/>
     </div>
   );
 };
 
-export default SettingsPage;
+export default SettingsTab;
