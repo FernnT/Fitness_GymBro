@@ -33,10 +33,216 @@
   }
 }
 
-.card {
-  padding: 2em;
+
+
+
+
+
+
+.stats-container {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.read-the-docs {
-  color: #888;
+.stats-header {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stats-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.stats-card p {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+  color: #111;
+}
+
+.stats-chart {
+  margin-top: 2rem;
+  padding: 1rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* SETTINGS */
+.page-container {
+  background-color: #000; /* Black Background */
+  color: #fff; /* White Text */
+  font-family: "Helvetica", sans-serif;
+  min-height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header Title */
+.page-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 0.9rem;
+  color: #888; /* Gray Text */
+  text-transform: uppercase;
+  margin: 1rem 0 0.5rem;
+}
+
+/* Section Items */
+.section-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #222; /* Subtle border */
+  font-size: 1.1rem;
+}
+
+.section-item:hover {
+  background-color: #111; /* Hover Effect */
+  cursor: pointer;
+}
+
+.arrow {
+  color: #555;
+  font-size: 1.3rem;
+}
+
+/* Bottom Navigation Bar */
+.bottom-navigation {
+  display: flex;
+  justify-content: space-around;
+  background-color: #111;
+  padding: 1rem 0;
+  border-top: 1px solid #222;
+}
+
+.nav-icon {
+  color: #555;
+  font-size: 1.5rem;
+}
+
+.nav-icon.active {
+  color: #fff; /* Highlight active icon */
+}
+
+
+/* WORKOUT INPUT */
+.page-container {
+  background-color: #000; /* Black Background */
+  color: #fff; /* White Text */
+  font-family: "Helvetica", sans-serif;
+  min-height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+.page-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Form Container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #888; /* Subtle Gray */
+}
+
+.form-group input {
+  background-color: #111; /* Dark Input Background */
+  color: #fff; /* White Text */
+  border: 1px solid #222; /* Subtle Border */
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #666; /* Slight Highlight */
+}
+
+/* Submit Button */
+.submit-button {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.submit-button:hover {
+  background-color: #666; /* Hover State */
+}
+
+/* Bottom Navigation Bar */
+.bottom-navigation {
+  display: flex;
+  justify-content: space-around;
+  background-color: #111;
+  padding: 1rem 0;
+  border-top: 1px solid #222;
+}
+
+.nav-icon {
+  color: #555;
+  font-size: 1.5rem;
+}
+
+.nav-icon.active {
+  color: #fff; /* Highlight active icon */
 }

@@ -17,6 +17,7 @@ npm run dev
 npm create vite@latest my-app
 cd Fitness_GymBro
 npm install react-router-dom
+npm install js-cookie
 npm install axios
 npm install
 npm run dev
@@ -28,7 +29,9 @@ npm run dev
 - **Express.js**
 - **PostgreSQ**
 - **Drizzle ORM**
-- **AI (for workout generation)not yet implemented**
+- **AI (for workout generation)
+- ## API Documentation
+https://documenter.getpostman.com/view/40110318/2sAYBbeowV
 
 ## HOW TO SETUP
 1. Download and install Postgresql
@@ -65,6 +68,3 @@ http://localhost:3000/auth/register
 ```bash
 npm run drizzle:seed
 ```
-
-## API Documentation(not yet finished)
-https://documenter.getpostman.com/view/40110318/2sAYBbeowV
