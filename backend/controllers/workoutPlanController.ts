@@ -3,6 +3,7 @@ import {db} from '../models/db';
 import { WorkoutPlan, workoutPlans } from "../models/schema";
 import { eq, and, sql } from 'drizzle-orm';
 import { userWorkoutExercise } from "../models/schema";
+import { exercises } from "../models/schema";
 
 
 
@@ -150,12 +151,17 @@ export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest
         const result = await db
             .select({
                 plan: workoutPlans,
-                exercises: userWorkoutExercise
+                exercises: userWorkoutExercise,
+                exerciseDetails: exercises
             })
             .from(workoutPlans)
             .leftJoin(
                 userWorkoutExercise,
                 eq(workoutPlans.planId, userWorkoutExercise.planId)
+            )
+            .leftJoin(
+                exercises,
+                eq(userWorkoutExercise.exerciseId, exercises.exerciseId)
             )
             .where(
                 and(
@@ -180,10 +186,11 @@ export const getWorkoutPlanWithUserWorkoutExerciseById = async (req: AuthRequest
             completed: result[0].plan.completed,
             createdAt: result[0].plan.createdAt,
             exercises: result
-                .filter(r => r.exercises) // Filter out null exercises
+                .filter(r => r.exercises)
                 .map(r => ({
                     workoutExerciseId: r.exercises.workoutExerciseId,
                     exerciseId: r.exercises.exerciseId,
+                    exerciseName: r.exerciseDetails?.name,
                     sets: r.exercises.sets,
                     reps: r.exercises.reps,
                     durationMin: r.exercises.durationMin,
@@ -221,7 +228,13 @@ export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,
                 userWorkoutExercise,
                 eq(workoutPlans.planId, userWorkoutExercise.planId)
             )
+            .leftJoin(
+                exercises,
+                eq(userWorkoutExercise.exerciseId, exercises.exerciseId)
+            )
             .where(eq(workoutPlans.userId, userId));
+
+           
 
         if (result.length === 0) {
             res.status(404).send({ message: "No workout plans or exercises found for the user." });
@@ -252,6 +265,7 @@ export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,
                     planId: curr["Workout Plans"].planId,
                     workoutExerciseId: curr["User Workout Exercise"].workoutExerciseId,
                     exerciseId: curr["User Workout Exercise"].exerciseId,
+                    exerciseName: curr["Exercises"]?.name,
                     sets: curr["User Workout Exercise"].sets,
                     reps: curr["User Workout Exercise"].reps,
                     durationMin: curr["User Workout Exercise"].durationMin,
@@ -267,11 +281,8 @@ export const getWorkoutPlanWithUserWorkoutExerciseAll = async (req: AuthRequest,
             return acc;
         }, {} as Record<number, any>);
 
-        // Convert the grouped object into an array
         const response = Object.values(groupedData);
-
-        console.log("Fetched workout plans with exercises:", response);
-            res.status(200).json(response);
+        res.status(200).json(response);
         return;
     } catch (error: any) {
         console.error("Error fetching workout plans and exercises:", error);
