@@ -21,16 +21,20 @@ export const getUserWorkoutExerciseByID = async (req: AuthRequest, res: Response
 
         const { id } = req.params;
 
-        // Join with workoutPlans to verify ownership
+        // Join with workoutPlans to verify ownership and exercises for name
         const result = await db
             .select({
                 exercise: userWorkoutExercise,
-                plan: workoutPlans
+                exerciseDetails: exercises
             })
             .from(userWorkoutExercise)
             .innerJoin(
                 workoutPlans,
                 eq(workoutPlans.planId, userWorkoutExercise.planId)
+            )
+            .innerJoin(
+                exercises,
+                eq(exercises.exerciseId, userWorkoutExercise.exerciseId)
             )
             .where(
                 and(
@@ -44,7 +48,47 @@ export const getUserWorkoutExerciseByID = async (req: AuthRequest, res: Response
             return;
         }
 
-        res.status(200).send(result[0].exercise);
+        // Format response to include exercise name
+        const response = {
+            ...result[0].exercise,
+            exerciseName: result[0].exerciseDetails.name
+        };
+
+        res.status(200).send(response);
+        return;
+    } catch (error) {
+        res.status(500).send(error.message);
+        return;
+    }
+}
+
+export const getUserWorkoutExerciseByPlanId = async (req: AuthRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            res.status(401).send("User not authenticated");
+            return;
+        }
+        const { planId } = req.params;
+        
+        const result = await db
+            .select({
+                exercise: userWorkoutExercise,
+                exerciseDetails: exercises
+            })
+            .from(userWorkoutExercise)
+            .innerJoin(
+                exercises,
+                eq(exercises.exerciseId, userWorkoutExercise.exerciseId)
+            )
+            .where(eq(userWorkoutExercise.planId, parseInt(planId)));
+
+        const response = result.map(r => ({
+            ...r.exercise,
+            exerciseName: r.exerciseDetails.name
+        }));
+
+        res.status(200).send(response);
         return;
     } catch (error) {
         res.status(500).send(error.message);
