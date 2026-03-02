@@ -1,18 +1,18 @@
 
 ## FRONTEND
-## TECH STACK## TECH STACK
+## TECH STACK 
 - **Node.js**
 - **JavaScript**
 
 
-#SETUP YOURSELF
+## SETUP YOURSELF
 download the repo
 ```
 cd ~/web_gymBro_frontEnd
 npm install
 npm run dev
 ```
-#HOW IT WAS CREATED
+## HOW IT WAS CREATED
 ```
 npm create vite@latest my-app
 cd Fitness_GymBro
